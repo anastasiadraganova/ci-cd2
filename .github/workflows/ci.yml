@@ -139,6 +139,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Validate Docker Hub secrets
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ]; then
+            echo "[ERROR] Missing GitHub secret: DOCKERHUB_USERNAME"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            echo "[ERROR] Missing GitHub secret: DOCKERHUB_TOKEN"
+            exit 1
+          fi
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
